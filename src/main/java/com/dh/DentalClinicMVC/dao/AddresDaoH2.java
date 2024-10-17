@@ -147,6 +147,6 @@ public class AddresDaoH2 implements  IDao<Address>{
                 e.printStackTrace();
             }
         }
-        return 2;
+        return addresses;
     }
 }

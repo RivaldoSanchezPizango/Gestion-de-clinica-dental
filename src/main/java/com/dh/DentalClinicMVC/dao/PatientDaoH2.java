@@ -1,13 +1,20 @@
 package com.dh.DentalClinicMVC.dao;
 
+import com.dh.DentalClinicMVC.model.Address;
 import com.dh.DentalClinicMVC.model.Patient;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PatientDaoH2 implements IDao<Patient>{
-    private static final String SQL_INSERT = "INSERT INTO PACIENTS (NAME, LAST_NAME, CARD_IDENTITY, " +
+    private static final String SQL_INSERT = "INSERT INTO PATIENTS (NAME, LAST_NAME, CARD_IDENTITY, " +
             "ADMISSION_OF_DATE, ADDRESS_ID) VALUES (?,?,?,?,?)";
+    private static final String SQL_SELECT = "SELECT * FROM PATIENTS WHERE ID= ?";
+    private static final String SQL_UPDATE = "UPDATE PATIENTS SET NAME=?, " + "LAST_NAME=?, CARD_IDENTITY=?, ADMISSION_OF_DATE=?, ADDRESS_ID=?" +
+            " WHERE ID=?";
+    private static final String SQL_DELETE = "DELETE FROM PATIENTS WHERE ID=?";
+    private static final String SQL_SELECT_ALL = "SELECT * FROM PATIENTS";
 
     @Override
     public Patient save(Patient patient) {
@@ -45,21 +52,109 @@ public class PatientDaoH2 implements IDao<Patient>{
 
     @Override
     public Patient findById(Integer id) {
-        return null;
+        Connection connection = null;
+        Patient patient = null;
+
+        try {
+            connection = DB.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT);
+            ps.setInt(1,id);
+
+            ResultSet rs = ps.executeQuery();
+
+            AddresDaoH2 addresDaoH2 = new AddresDaoH2();
+            while (rs.next()) {
+                Address address = addresDaoH2.findById(rs.getInt(6));
+                patient = new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5).toLocalDate(), address);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return patient;
     }
 
     @Override
     public void update(Patient patient) {
+        Connection connection = null;
 
+        try {
+            connection = DB.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQL_UPDATE);
+            ps.setString(1,patient.getName());
+            ps.setString(2, patient.getLastName());
+            ps.setInt(3, patient.getCardIdentity());
+            ps.setDate(4,Date.valueOf(patient.getAdmissionOfDate()));
+            ps.setInt(5,patient.getAddress().getId());
+            ps.setInt(6,patient.getId());
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
-    public void delete(Integer t) {
+    public void delete(Integer id) {
+        Connection connection = null;
 
+        try {
+            connection = DB.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQL_DELETE);
+            ps.setInt(1, id);
+            ps.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public List<Patient> findAll() {
-        return List.of();
+        Connection connection = null;
+            Address address;
+            List<Patient> patients = new ArrayList<>();
+
+        try {
+            AddresDaoH2 addresDaoH2 = new AddresDaoH2();
+            connection = DB.getConnection();
+            PreparedStatement ps = connection.prepareStatement(SQL_SELECT_ALL);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                address = addresDaoH2.findById(rs.getInt(6));
+                patients.add(new Patient(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getDate(5).toLocalDate(), address));
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connection.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return patients;
     }
 }
