@@ -21,6 +21,7 @@ public class DB {
             "PATIENTS; CREATE TABLE PATIENTS (ID INT AUTO_INCREMENT PRIMARY KEY," +
             " NAME VARCHAR(100) NOT NULL," +
             " LAST_NAME VARCHAR(100) NOT NULL," +
+            " EMAIL VARCHAR(100) NOT NULL," +
             " CARD_IDENTITY INT NOT NULL," +
             " ADMISSION_OF_DATE DATE NOT NULL," +
             " ADDRESS_ID INT NOT NULL)";
@@ -32,8 +33,8 @@ public class DB {
             " L AST_NAME VARCHAR(100) NOT NULL,";
 
     private static final String SQL_INSERT = "INSERT INTO ADDRESSES(STREET, NUMBER, LOCATION, PROVINCE)" +
-            " VALUES ('Calle A',101,'Lujan de Cuyo', 'Mendoza'); INSERT INTO PATIENTS (NAME, LAST_NAME," +
-            "CARD_IDENTITY, ADMISSION_OF_DATE, ADDRESS_ID) VALUES ('Juan', 'Perez',3943959,'2024-10-15'," +
+            " VALUES ('Calle A',101,'Lujan de Cuyo', 'Mendoza'); INSERT INTO PATIENTS (NAME, LAST_NAME, EMAIL," +
+            "CARD_IDENTITY, ADMISSION_OF_DATE, ADDRESS_ID) VALUES ('Juan', 'Perez', 'prueba@gmail.com',3943959,'2024-10-15'," +
             "1); INSERT INTO DENTISTS (REGISTRATION, NAME, LAST_NAME) VALUES(434,'Oiler','Muelas')";
 
     public static Connection getConnection() throws Exception{

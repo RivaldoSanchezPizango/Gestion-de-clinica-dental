@@ -149,4 +149,9 @@ public class AddresDaoH2 implements  IDao<Address>{
         }
         return addresses;
     }
+
+    @Override
+    public Address findByString(String value) {
+        return null;
+    }
 }

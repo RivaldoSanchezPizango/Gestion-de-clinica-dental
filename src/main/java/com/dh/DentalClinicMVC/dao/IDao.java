@@ -9,5 +9,5 @@ public interface IDao<T> {
     void update (T t);
     void delete (Integer t);
     List<T> findAll();
-
+    T findByString(String value);
 }
