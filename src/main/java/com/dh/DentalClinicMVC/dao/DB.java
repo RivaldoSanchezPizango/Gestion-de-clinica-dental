@@ -6,7 +6,7 @@ import java.sql.Statement;
 
 public class DB {
 
-    private static final String DRIVER = "org.h2.DRIVER";
+    private static final String DRIVER = "org.h2.Driver";
     private static final String URL = "jdbc:h2:./dc";
     private static final String USER = "sa";
     private static final String PASSWORD = "sa";
@@ -30,7 +30,7 @@ public class DB {
             "DENTISTS; CREATE TABLE DENTISTS (ID INT AUTO_INCREMENT PRIMARY KEY," +
             " REGISTRATION INT NOT NULL," +
             " NAME VARCHAR(100) NOT NULL," +
-            " L AST_NAME VARCHAR(100) NOT NULL,";
+            " LAST_NAME VARCHAR(100) NOT NULL,";
 
     private static final String SQL_INSERT = "INSERT INTO ADDRESSES(STREET, NUMBER, LOCATION, PROVINCE)" +
             " VALUES ('Calle A',101,'Lujan de Cuyo', 'Mendoza'); INSERT INTO PATIENTS (NAME, LAST_NAME, EMAIL," +
@@ -38,7 +38,7 @@ public class DB {
             "1); INSERT INTO DENTISTS (REGISTRATION, NAME, LAST_NAME) VALUES(434,'Oiler','Muelas')";
 
     public static Connection getConnection() throws Exception{
-        Class.forName("DRIVER");
+        Class.forName(DRIVER);
         return DriverManager.getConnection(URL,USER,PASSWORD);
     }
 
