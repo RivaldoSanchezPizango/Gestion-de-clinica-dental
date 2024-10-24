@@ -3,19 +3,22 @@ package com.dh.DentalClinicMVC.model;
 public class Dentist {
 
     private Integer id;
-    private Integer registraation;
+    private Integer registration;
     private String name;
     private String lastName;
 
-    public Dentist(Integer id, Integer registraation, String name, String lastName) {
+    public Dentist() {
+    }
+
+    public Dentist(Integer id, Integer registration, String name, String lastName) {
         this.id = id;
-        this.registraation = registraation;
+        this.registration = registration;
         this.name = name;
         this.lastName = lastName;
     }
 
-    public Dentist(Integer registraation, String name, String lastName) {
-        this.registraation = registraation;
+    public Dentist(Integer registration, String name, String lastName) {
+        this.registration = registration;
         this.name = name;
         this.lastName = lastName;
     }
@@ -29,11 +32,11 @@ public class Dentist {
     }
 
     public Integer getRegistraation() {
-        return registraation;
+        return registration;
     }
 
-    public void setRegistraation(Integer registraation) {
-        this.registraation = registraation;
+    public void setRegistraation(Integer registration) {
+        this.registration = registration;
     }
 
     public String getName() {
