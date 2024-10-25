@@ -12,13 +12,13 @@ import java.util.List;
 public class DentistDaoH2 implements  IDao<Dentist>{
 
     private static  final String SQL_INSERT = "INSERT INTO DENTISTS (REGISTRATION," +
-            "NAME, LAST_NAME) VALUES (?,?,?)";
+            "NAME,LAST_NAME) VALUES (?,?,?)";
 
     private static final  String SQL_SELECT_ID = "SELECT * FROM DENTISTS" +
             " WHERE ID=?";
 
-    private static final String SQL_UPDATE = "UPDATE DENTISTS SET REGISTRATION=?" +
-            "NAME=?, LAST:NAME=? WHERE ID=?";
+    private static final String SQL_UPDATE = "UPDATE DENTISTS SET REGISTRATION=?," +
+            "NAME=?, LAST_NAME=? WHERE ID=?";
 
     private  static final  String  SQL_DELETE = "DELETE FROM DENTISTS WHERE ID=?";
 
@@ -31,9 +31,10 @@ public class DentistDaoH2 implements  IDao<Dentist>{
         try {
             connection = DB.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1,dentist.getRegistraation());
+            ps.setInt(1,dentist.getRegistration());
             ps.setString(2, dentist.getName());
             ps.setString(3, dentist.getLastName());
+            ps.execute();
 
             ResultSet rs = ps.getGeneratedKeys();
             while (rs.next()) {
@@ -91,7 +92,7 @@ public class DentistDaoH2 implements  IDao<Dentist>{
             connection = DB.getConnection();
             PreparedStatement ps = connection.prepareStatement(SQL_UPDATE);
 
-            ps.setInt(1, dentist.getRegistraation());
+            ps.setInt(1, dentist.getRegistration());
             ps.setString(2,dentist.getName());
             ps.setString(3,dentist.getLastName());
             ps.setInt(4,dentist.getId());

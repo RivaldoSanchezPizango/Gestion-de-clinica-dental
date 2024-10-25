@@ -31,11 +31,11 @@ public class Dentist {
         this.id = id;
     }
 
-    public Integer getRegistraation() {
+    public Integer getRegistration() {
         return registration;
     }
 
-    public void setRegistraation(Integer registration) {
+    public void setRegistration(Integer registration) {
         this.registration = registration;
     }
 

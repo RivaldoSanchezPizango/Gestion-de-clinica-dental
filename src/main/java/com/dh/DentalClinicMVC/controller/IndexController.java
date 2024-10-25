@@ -35,7 +35,7 @@ public class IndexController {
         // AGREGAR LA VISTA QUE SE CORRESPONDE CON ODONTOLOGO
         model.addAttribute("nameDentist", dentist.getName());
         model.addAttribute("lastNameDentist", dentist.getLastName());
-        model.addAttribute("registration", dentist.getRegistraation());
+        model.addAttribute("registration", dentist.getRegistration());
 
         return "index";
     }
