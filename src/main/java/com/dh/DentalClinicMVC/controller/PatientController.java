@@ -5,6 +5,8 @@ import com.dh.DentalClinicMVC.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/pacientes")
 public class PatientController {
@@ -26,6 +28,11 @@ public class PatientController {
     @PutMapping
     public void update(@RequestBody Patient patient) {
         patientService.update(patient);
+    }
+
+    @GetMapping
+    public List<Patient> findAll () {
+        return patientService.findAll();
     }
 
 }
