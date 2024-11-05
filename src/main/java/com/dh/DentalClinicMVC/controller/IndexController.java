@@ -2,8 +2,8 @@ package com.dh.DentalClinicMVC.controller;
 
 import com.dh.DentalClinicMVC.model.Dentist;
 import com.dh.DentalClinicMVC.model.Patient;
-import com.dh.DentalClinicMVC.service.DentistService;
-import com.dh.DentalClinicMVC.service.PatientService;
+import com.dh.DentalClinicMVC.service.impl.DentistServiceimpl;
+import com.dh.DentalClinicMVC.service.impl.PatientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +16,18 @@ public class IndexController {
 
     private PatientService patientService;
 
-    private DentistService dentistService;
+    private DentistServiceimpl dentistServiceimpl;
 
-    public IndexController(PatientService patientService, DentistService dentistService) {
+    public IndexController(PatientService patientService, DentistServiceimpl dentistServiceimpl) {
         this.patientService = patientService;
-        this.dentistService = dentistService;
+        this.dentistServiceimpl = dentistServiceimpl;
     }
 
     @GetMapping
     public String findPatientByEmail (Model model,@RequestParam("email") String email, @RequestParam("id") Integer id) {
 
         Patient patient = patientService.findByEmail(email);
-        Dentist dentist = dentistService.findById(id);
+        Dentist dentist = dentistServiceimpl.findById(id);
         // BUSCAMOS AL ODONTOLOGO CON ID
         model.addAttribute("name", patient.getName());
         model.addAttribute("lastName", patient.getLastName());

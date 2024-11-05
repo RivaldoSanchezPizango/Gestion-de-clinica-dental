@@ -1,9 +1,9 @@
 package com.dh.DentalClinicMVC.controller;
 
 import com.dh.DentalClinicMVC.model.Appointment;
-import com.dh.DentalClinicMVC.service.AppointmentService;
-import com.dh.DentalClinicMVC.service.DentistService;
-import com.dh.DentalClinicMVC.service.PatientService;
+import com.dh.DentalClinicMVC.service.impl.AppointmentService;
+import com.dh.DentalClinicMVC.service.impl.DentistServiceimpl;
+import com.dh.DentalClinicMVC.service.impl.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ import java.util.List;
 public class AppointmentController {
 
     private AppointmentService appointmentService;
-    private DentistService dentistService;
+    private DentistServiceimpl dentistServiceimpl;
     private PatientService patientService;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService, DentistService dentistService, PatientService patientService) {
+    public AppointmentController(AppointmentService appointmentService, DentistServiceimpl dentistServiceimpl, PatientService patientService) {
         this.appointmentService = appointmentService;
-        this.dentistService = dentistService;
+        this.dentistServiceimpl = dentistServiceimpl;
         this.patientService = patientService;
     }
 
@@ -37,7 +37,7 @@ public class AppointmentController {
         ResponseEntity<Appointment> response;
 
         // chequeamos que existen el odontologo y el paciente
-        if (dentistService.findById(appointment.getDentist().getId()) != null
+        if (dentistServiceimpl.findById(appointment.getDentist().getId()) != null
         && patientService.findById(appointment.getPatient().getId()) !=null) {
             // seteamos al ResponseEntity con el codigo 200 y le agregamos el turno como cuerpo de la respuesta
             response = ResponseEntity.ok(appointmentService.save(appointment));

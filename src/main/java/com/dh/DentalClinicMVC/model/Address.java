@@ -1,37 +1,37 @@
 package com.dh.DentalClinicMVC.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "address")
 public class Address {
 
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
+    private Long id;
+
+    @Column(name = "street")
     private String street;
+
+    @Column(name = "number")
     private Integer number;
+
+    @Column(name = "location")
     private String location;
+
+    @Column(name = "province")
     private String province;
 
     public Address() {
 
     }
 
-    public Address(Integer id, String street, Integer number, String location, String province) {
-        this.id = id;
-        this.street = street;
-        this.number = number;
-        this.location = location;
-        this.province = province;
-    }
-
-    public Address(String street, Integer number, String location, String province) {
-        this.street = street;
-        this.number = number;
-        this.location = location;
-        this.province = province;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
