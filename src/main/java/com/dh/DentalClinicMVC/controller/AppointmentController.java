@@ -1,44 +1,47 @@
 package com.dh.DentalClinicMVC.controller;
 
 import com.dh.DentalClinicMVC.model.Appointment;
-import com.dh.DentalClinicMVC.service.impl.AppointmentService;
-import com.dh.DentalClinicMVC.service.impl.DentistServiceimpl;
-import com.dh.DentalClinicMVC.service.impl.PatientService;
+import com.dh.DentalClinicMVC.service.IAppointmentService;
+import com.dh.DentalClinicMVC.service.IDentistService;
+import com.dh.DentalClinicMVC.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/turnos")
 public class AppointmentController {
 
-    private AppointmentService appointmentService;
-    private DentistServiceimpl dentistServiceimpl;
-    private PatientService patientService;
+    private IAppointmentService appointmentService;
+    private IDentistService dentistService;
+    private IPatientService patientService;
 
     @Autowired
-    public AppointmentController(AppointmentService appointmentService, DentistServiceimpl dentistServiceimpl, PatientService patientService) {
+    public AppointmentController(IAppointmentService appointmentService, IDentistService dentistService, IPatientService patientService) {
         this.appointmentService = appointmentService;
-        this.dentistServiceimpl = dentistServiceimpl;
+        this.dentistService = dentistService;
         this.patientService = patientService;
     }
 
+    // ESTE ENDPOINT CONSULTA TODOS LOS TURNOS
     @GetMapping
     public ResponseEntity<List<Appointment>> findAll() {
         return ResponseEntity.ok(appointmentService.findAll());
     }
 
+    //CREAR UN TURNO
     @PostMapping
     public ResponseEntity<Appointment> save(@RequestBody Appointment appointment) {
 
         ResponseEntity<Appointment> response;
 
         // chequeamos que existen el odontologo y el paciente
-        if (dentistServiceimpl.findById(appointment.getDentist().getId()) != null
-        && patientService.findById(appointment.getPatient().getId()) !=null) {
+        if (dentistService.findByid(appointment.getDentist().getId()).isPresent()
+        && patientService.findByid(appointment.getPatient().getId()).isPresent()) {
             // seteamos al ResponseEntity con el codigo 200 y le agregamos el turno como cuerpo de la respuesta
             response = ResponseEntity.ok(appointmentService.save(appointment));
         } else {
@@ -47,4 +50,47 @@ public class AppointmentController {
         }
         return response;
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Appointment> findById(Long id) {
+        Optional<Appointment> appointmentToLookFor = appointmentService.findByid(id);
+
+        if (appointmentToLookFor.isPresent()) {
+            return ResponseEntity.ok(appointmentToLookFor.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //
+    // PUTMAPPING
+
+    @PutMapping
+    public ResponseEntity<String> update(@RequestBody  Appointment appointment) {
+        ResponseEntity<String> response;
+        // chequeamos ue existan el odontologo y el paciente
+        if (dentistService.findByid(appointment.getDentist().getId()).isPresent()
+            && patientService.findByid(appointment.getPatient().getId()).isPresent()){
+            appointmentService.update(appointment);
+            response = ResponseEntity.ok("se actualizo el tuno del id: " + appointment.getId());
+        } else {
+            response = ResponseEntity.badRequest().body("mo se puede actualizar un turno.");
+        }
+        return response;
+    }
+
+    @DeleteMapping ("/{id}")
+    public ResponseEntity<String> delete (@PathVariable Long id) {
+
+        ResponseEntity<String> response;
+
+        if (appointmentService.findByid(id).isPresent()) {
+            appointmentService.delete(id);
+            response = ResponseEntity.ok("Se elimino turno con ID " + id);
+        } else {
+            response = ResponseEntity.ok().body("no se puede eliminar un turno que no existe en la BD.");
+        }
+        return response;
+    }
+
 }

@@ -1,7 +1,7 @@
 package com.dh.DentalClinicMVC.controller;
 
 import com.dh.DentalClinicMVC.model.Patient;
-import com.dh.DentalClinicMVC.service.impl.PatientService;
+import com.dh.DentalClinicMVC.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +11,9 @@ import java.util.List;
 @RequestMapping("/pacientes")
 public class PatientController {
 
-    private PatientService patientService;
-
+    private IPatientService patientService;
     @Autowired
-    public PatientController(PatientService patientService) {
+    public PatientController(IPatientService patientService) {
         this.patientService = patientService;
     }
 

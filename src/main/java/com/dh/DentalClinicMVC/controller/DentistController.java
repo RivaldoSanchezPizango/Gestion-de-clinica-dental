@@ -27,7 +27,7 @@ public class DentistController {
         Optional<Dentist> dentist = iDentistService.findByid(id);
 
         if (dentist.isPresent()) {
-            return ResponseEntity.ok(dentist);
+            return ResponseEntity.ok(dentist.get());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -46,6 +46,7 @@ public class DentistController {
     ResponseEntity<String> update(@RequestBody Dentist dentist) {
         ResponseEntity<String> response;
         Optional<Dentist> dentistToLookFor = iDentistService.findByid(dentist.getId());
+
         if (dentistToLookFor.isPresent()) {
             iDentistService.update(dentist);
             response = ResponseEntity.ok("Se actualizo elcodigo con nombre: " + dentist.getName());
@@ -54,16 +55,16 @@ public class DentistController {
         }
         return response;
     }
-8:50
 
     // VAMOS A BORRAR UN ODONTOLOGO
     @DeleteMapping("/{id}")
-    ResponseEntity<String> delete(@RequestBody Long id) {
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         ResponseEntity<String> response;
+        Optional<Dentist> dentist = iDentistService.findByid(id);
 
-        if (dentistToLookFor.isPresent()) {
-            iDentistService.update(dentist);
-            response = ResponseEntity.ok("Se actualizo elcodigo con nombre: " + dentist.getName());
+        if (dentist.isPresent()) {
+            iDentistService.delete(id);
+            response = ResponseEntity.ok("Se actualizo elcodigo con nombre: " + id);
         } else {
             response = ResponseEntity.ok().body("No se puede actualizar un odontologo que no existe en la BD");
         }
@@ -72,7 +73,7 @@ public class DentistController {
 
     // VAMOS A LISTAR TODOS LOS ODONTOLOGOS
     @GetMapping
-    public List<Dentist> findAll() {
-        return dentistServiceimpl.findAll();
+    public ResponseEntity <List<Dentist>> findAll() {
+        return ResponseEntity.ok(iDentistService.findAll());
     }
 }
