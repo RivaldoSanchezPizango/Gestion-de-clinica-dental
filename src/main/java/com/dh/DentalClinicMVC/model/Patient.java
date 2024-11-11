@@ -28,6 +28,8 @@ public class Patient {
     @Column(name = "admission_of_date")
     private LocalDate admissionOfDate;
 
+    // mapeo de relaciones
+    @OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address;
 
     public Patient() {
