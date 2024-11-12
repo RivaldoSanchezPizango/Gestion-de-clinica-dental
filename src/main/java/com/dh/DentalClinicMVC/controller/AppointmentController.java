@@ -1,6 +1,7 @@
 package com.dh.DentalClinicMVC.controller;
 
-import com.dh.DentalClinicMVC.model.Appointment;
+import com.dh.DentalClinicMVC.dto.AppointmentDTO;
+import com.dh.DentalClinicMVC.entity.Appointment;
 import com.dh.DentalClinicMVC.service.IAppointmentService;
 import com.dh.DentalClinicMVC.service.IDentistService;
 import com.dh.DentalClinicMVC.service.IPatientService;
@@ -35,15 +36,14 @@ public class AppointmentController {
 
     //CREAR UN TURNO
     @PostMapping
-    public ResponseEntity<Appointment> save(@RequestBody Appointment appointment) {
-
-        ResponseEntity<Appointment> response;
+    public ResponseEntity<AppointmentDTO> save(@RequestBody AppointmentDTO appointmentDTO) {
+        ResponseEntity<AppointmentDTO> response;
 
         // chequeamos que existen el odontologo y el paciente
-        if (dentistService.findByid(appointment.getDentist().getId()).isPresent()
-        && patientService.findByid(appointment.getPatient().getId()).isPresent()) {
+        if (dentistService.findByid(appointmentDTO.getDentist_id()).isPresent()
+        && patientService.findByid(appointmentDTO.getPatient_id()).isPresent()) {
             // seteamos al ResponseEntity con el codigo 200 y le agregamos el turno como cuerpo de la respuesta
-            response = ResponseEntity.ok(appointmentService.save(appointment));
+            response = ResponseEntity.ok(appointmentService.save(appointmentDTO));
         } else {
             // setear al ResponseEntity el codigo 400
             response = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

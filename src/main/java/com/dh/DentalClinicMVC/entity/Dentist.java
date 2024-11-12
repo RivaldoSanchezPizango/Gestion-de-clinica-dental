@@ -1,6 +1,9 @@
-package com.dh.DentalClinicMVC.model;
+package com.dh.DentalClinicMVC.entity;
 
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "dentists")
@@ -16,6 +19,9 @@ public class Dentist {
 
     @Column(name = "name")
     private String name;
+
+    @OneToMany(mappedBy = "dentist")
+    private Set<Appointment> appointments = new HashSet<>();
 
     @Column(name = "last_name")
     private String lastName;
@@ -53,5 +59,13 @@ public class Dentist {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
     }
 }
