@@ -10,7 +10,7 @@ public interface IAppointmentService {
 
     AppointmentDTO save(AppointmentDTO appointmentDTO);
     Optional<AppointmentDTO> findByid(Long id);
-    void update(Appointment appointment);
+    AppointmentDTO update(AppointmentDTO appointment) throws Exception;
     void delete (Long id);
     List<AppointmentDTO> findAll();
 

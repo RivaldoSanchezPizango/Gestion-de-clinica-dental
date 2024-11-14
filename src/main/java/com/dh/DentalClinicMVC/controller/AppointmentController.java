@@ -66,15 +66,18 @@ public class AppointmentController {
     // PUTMAPPING
 
     @PutMapping
-    public ResponseEntity<String> update(@RequestBody  Appointment appointment) {
-        ResponseEntity<String> response;
+    public ResponseEntity<AppointmentDTO> update(@RequestBody  AppointmentDTO appointmentDTO) throws Exception {
+        ResponseEntity<AppointmentDTO> response;
         // chequeamos ue existan el odontologo y el paciente
-        if (dentistService.findByid(appointment.getDentist().getId()).isPresent()
-            && patientService.findByid(appointment.getPatient().getId()).isPresent()){
-            appointmentService.update(appointment);
-            response = ResponseEntity.ok("se actualizo el tuno del id: " + appointment.getId());
+        if (dentistService.findByid(appointmentDTO.getDentist_id()).isPresent()
+            && patientService.findByid(appointmentDTO.getPatient_id()).isPresent()){
+            // ambos existen en la BD
+            // seteamos al ResponseEntity con el codigo 200 y le agregamos el turno DTO como cuerpo de la respuesta
+            response = ResponseEntity.ok(appointmentService.update(appointmentDTO));
         } else {
-            response = ResponseEntity.badRequest().body("mo se puede actualizar un turno.");
+            // uno no existe, entonces bloqueamos la operacion
+            // setear el ResponseEntity el codigo 400
+            response = ResponseEntity.badRequest().build();
         }
         return response;
     }

@@ -94,8 +94,45 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public void update(Appointment appointment) {
-        appointmentRepository.save(appointment);
+    public AppointmentDTO update(AppointmentDTO appointmentDTO) throws Exception {
+        // chequeo que el turno actualizar exista
+        if (appointmentRepository.findById(appointmentDTO.getId()).isPresent()) {
+            // buscar la entidad en la BD
+            Optional <Appointment> appointmentEntity = appointmentRepository.findById(appointmentDTO.getId());
+
+            // instanciamos un paciente
+            Patient patientEntity = new Patient();
+            patientEntity.setId(appointmentDTO.getPatient_id());
+
+            // instanciamos un odontologo
+            Dentist dentistEntity = new Dentist();
+            dentistEntity.setId(appointmentDTO.getDentist_id());
+
+            // seteamos el paciente y el odontologo a nuestra entidad turno
+            appointmentEntity.get().setPatient(patientEntity);
+            appointmentEntity.get().setDentist(dentistEntity);
+
+            // convertir el string del turno DTO que es la fecha a un
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate date = LocalDate.parse(appointmentDTO.getDate(), formatter);
+
+            // setear la fecha
+            appointmentEntity.get().setDate(date);
+
+            // persistir en la BD
+            appointmentRepository.save(appointmentEntity.get());
+
+            // vamos a trabajar sobre la respuesta (DTO) a devolver
+            AppointmentDTO appointmentDTOToReturn = new AppointmentDTO();
+            appointmentDTOToReturn.setId(appointmentEntity.get().getId());
+            appointmentDTOToReturn.setPatient_id(appointmentEntity.get().getPatient().getId());
+            appointmentDTOToReturn.setDentist_id(appointmentEntity.get().getDentist().getId());
+            appointmentDTOToReturn.setDate(appointmentEntity.get().getDate().toString());
+
+            return appointmentDTOToReturn;
+        } else {
+            throw new Exception("No se pudo actualizar el turno");
+        }
     }
 
     @Override
