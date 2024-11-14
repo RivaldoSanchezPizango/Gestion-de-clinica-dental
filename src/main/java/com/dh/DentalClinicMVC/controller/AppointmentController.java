@@ -30,7 +30,7 @@ public class AppointmentController {
 
     // ESTE ENDPOINT CONSULTA TODOS LOS TURNOS
     @GetMapping
-    public ResponseEntity<List<Appointment>> findAll() {
+    public ResponseEntity<List<AppointmentDTO>> findAll() {
         return ResponseEntity.ok(appointmentService.findAll());
     }
 

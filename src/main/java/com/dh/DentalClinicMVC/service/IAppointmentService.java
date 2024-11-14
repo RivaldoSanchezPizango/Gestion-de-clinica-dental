@@ -12,6 +12,6 @@ public interface IAppointmentService {
     Optional<Appointment> findByid(Long id);
     void update(Appointment appointment);
     void delete (Long id);
-    List<Appointment> findAll();
+    List<AppointmentDTO> findAll();
 
 }
