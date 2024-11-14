@@ -67,8 +67,30 @@ public class AppointmentService implements IAppointmentService {
     }
 
     @Override
-    public Optional<Appointment> findByid(Long id) {
-        return appointmentRepository.findById(id);
+    public Optional<AppointmentDTO> findByid(Long id) {
+        // vamos a buscar la entidad por ID en la BD
+        Optional<Appointment>appointmentToLookFor = appointmentRepository.findById(id);
+
+        // instanciamso el DTO
+        Optional<AppointmentDTO> appointmentDTO = null;
+
+        if (appointmentToLookFor.isPresent()) {
+            // recuperar la entidad que se encontro y guardarla en la variable appointment
+            Appointment appointment = appointmentToLookFor.get();
+
+            // trabajar sobre la informacion que tenemos que devolver = DTO
+            // vamos a crear una instancia de turnoDTO para devolver
+            AppointmentDTO appointmentDTOToReturn = new AppointmentDTO();
+            appointmentDTOToReturn.setId(appointment.getId());
+            appointmentDTOToReturn.setPatient_id(appointment.getPatient().getId());
+            appointmentDTOToReturn.setDentist_id(appointment.getDentist().getId());
+            appointmentDTOToReturn.setDate(appointment.getDate().toString());
+
+            appointmentDTO = Optional.of(appointmentDTOToReturn);
+
+        }
+
+        return appointmentDTO;
     }
 
     @Override

@@ -52,8 +52,8 @@ public class AppointmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Appointment> findById(Long id) {
-        Optional<Appointment> appointmentToLookFor = appointmentService.findByid(id);
+    public ResponseEntity<AppointmentDTO> findById(@PathVariable Long id) {
+        Optional<AppointmentDTO> appointmentToLookFor = appointmentService.findByid(id);
 
         if (appointmentToLookFor.isPresent()) {
             return ResponseEntity.ok(appointmentToLookFor.get());

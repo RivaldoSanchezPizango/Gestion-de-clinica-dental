@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IAppointmentService {
 
     AppointmentDTO save(AppointmentDTO appointmentDTO);
-    Optional<Appointment> findByid(Long id);
+    Optional<AppointmentDTO> findByid(Long id);
     void update(Appointment appointment);
     void delete (Long id);
     List<AppointmentDTO> findAll();
