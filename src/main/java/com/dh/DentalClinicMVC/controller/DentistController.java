@@ -76,4 +76,14 @@ public class DentistController {
     public ResponseEntity <List<Dentist>> findAll() {
         return ResponseEntity.ok(iDentistService.findAll());
     }
+
+    @GetMapping("/registration/{registration}")
+    public ResponseEntity<Dentist> findByRegistration(@PathVariable Integer registration) throws Exception {
+      Optional<Dentist> dentist = IDentistService.findByRegistration(registration);
+      if (dentist.isPresent()) {
+          return ResponseEntity.ok(dentist.get());
+      } else {
+          throw new Exception("No se encontro la matricula: " + registration);
+      }
+    }
 }
