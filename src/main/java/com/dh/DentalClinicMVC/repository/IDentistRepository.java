@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface IDentistRepository extends JpaRepository<Dentist, Long> {
 
-    @Query("SELECT d FROM Dentist d WHERE d.registration=?1")
+   // @Query("SELECT d FROM Dentist d WHERE d.registration=?1")
     Optional<Dentist> findByRegistration(Integer registration);
 
 }

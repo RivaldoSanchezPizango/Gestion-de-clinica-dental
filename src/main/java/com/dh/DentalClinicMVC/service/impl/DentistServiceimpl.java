@@ -1,6 +1,7 @@
 package com.dh.DentalClinicMVC.service.impl;
 
 import com.dh.DentalClinicMVC.entity.Dentist;
+import com.dh.DentalClinicMVC.exception.ResourceNotFoundException;
 import com.dh.DentalClinicMVC.repository.IDentistRepository;
 import com.dh.DentalClinicMVC.service.IDentistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,17 @@ public class DentistServiceimpl implements IDentistService {
     }
 
     @Override
-    public void delete(Long id) {
-        dentistRepository.deleteById(id);
+    public void delete(Long id) throws ResourceNotFoundException {
+        // vamos a buscar por ID el odontologo y si no existe vamos a lanzar la excepcion
+
+        // vamos a buscar el primer odontologo por id
+        Optional<Dentist> dentistToLookFor = findByid(id);
+
+        if (dentistToLookFor.isPresent()) {
+            dentistRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("No se pudo eliminar el odontologo con id: " + id);
+        }
     }
 
     @Override
