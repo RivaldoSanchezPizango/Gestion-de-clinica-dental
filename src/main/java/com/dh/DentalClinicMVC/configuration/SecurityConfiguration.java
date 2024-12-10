@@ -15,8 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private  JwtAuthenticationFilter jwtAuthenticationFilter;
-    private  AuthenticationProvider authenticationProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private  final AuthenticationProvider authenticationProvider;
 
 
     @Bean
@@ -24,7 +24,7 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable()) // Deshabilita CSRF usando la nueva sintaxis lambda
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/..").permitAll() // Permitir acceso a ciertas rutas
+                        .requestMatchers("/auth/**").permitAll() // Permitir acceso a ciertas rutas
                         .anyRequest().authenticated() // Requiere autenticación para las demás rutas
                 )
                 .sessionManagement(session -> session
